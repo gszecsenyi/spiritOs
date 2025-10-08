@@ -52,6 +52,14 @@ LIB_OBJS = $(LIB_SRCS:%.c=$(BUILD_DIR)/%.o)
 SPIROCTL_SRCS = $(BIN_DIR)/spiroctl.c
 SPIROCTL_OBJS = $(SPIROCTL_SRCS:%.c=$(BUILD_DIR)/%.o)
 
+# Kernel modules needed by spiroctl (compiled for userland)
+SPIROCTL_KERNEL_SRCS = $(KERNEL_DIR)/soul_core.c \
+                       $(KERNEL_DIR)/ephemeris_provider.c \
+                       $(KERNEL_DIR)/destiny_engine.c \
+                       $(KERNEL_DIR)/astral_fs.c
+
+SPIROCTL_KERNEL_OBJS = $(SPIROCTL_KERNEL_SRCS:%.c=$(BUILD_DIR)/%_userland.o)
+
 # Targets
 KERNEL_TARGET = $(BUILD_DIR)/spiritos.elf
 KERNEL_ISO = $(BUILD_DIR)/spiritos.iso
@@ -89,7 +97,7 @@ $(LIBSPIRO_TARGET): $(LIB_OBJS)
 	@echo "✓ Library built: $@"
 
 # Build spiroctl
-$(SPIROCTL_TARGET): $(SPIROCTL_OBJS) $(LIB_OBJS)
+$(SPIROCTL_TARGET): $(SPIROCTL_OBJS) $(SPIROCTL_KERNEL_OBJS) $(LIB_OBJS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 	@echo "✓ Control utility built: $@"
@@ -103,6 +111,11 @@ $(BUILD_DIR)/boot/%.o: boot/%.S
 $(BUILD_DIR)/$(KERNEL_DIR)/%.o: $(KERNEL_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(KERNEL_CFLAGS) -c -o $@ $<
+
+# Compile kernel objects for userland (spiroctl)
+$(BUILD_DIR)/$(KERNEL_DIR)/%_userland.o: $(KERNEL_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -DUSERLAND_BUILD -c -o $@ $<
 
 # Compile HAL objects
 $(BUILD_DIR)/$(HAL_DIR)/%.o: $(HAL_DIR)/%.c
