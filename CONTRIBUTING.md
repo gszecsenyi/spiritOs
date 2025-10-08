@@ -214,8 +214,8 @@ make clean && make all && make test
 # Check celestial state
 ./build/spiroctl ephemeris show
 
-# Run kernel
-./build/spiritos-kernel
+# Run kernel in QEMU
+make kvm-test
 ```
 
 ---

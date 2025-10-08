@@ -1,16 +1,22 @@
-# SpiritOS KVM Testing
+# SpiritOS QEMU Testing
 
-This directory contains scripts and resources for running SpiritOS in a KVM/QEMU virtual machine environment.
+**Note:** The scripts in this directory (create-initramfs.sh, run-kvm.sh, setup-kernel.sh) were for running a hosted kernel in a VM and are now obsolete. Use `make kvm-test` from the root directory to test the freestanding kernel directly in QEMU.
 
-## Overview
+## Testing the Freestanding Kernel
 
-SpiritOS can be executed in a virtualized environment using QEMU with optional KVM acceleration. This provides an isolated testing environment that closely mimics a real system boot process.
+The freestanding kernel can be executed directly in QEMU using the Makefile:
+
+```bash
+# From the root directory
+make kvm-test
+```
+
+This will boot the standalone `spiritos.elf` kernel using QEMU's multiboot support.
 
 ## Prerequisites
 
 - QEMU (qemu-system-x86_64)
 - KVM support (optional, for hardware acceleration)
-- sudo access (for initial kernel setup)
 
 ### Installing QEMU
 
@@ -23,10 +29,6 @@ On Fedora/RHEL:
 ```bash
 sudo dnf install qemu-kvm qemu-system-x86
 ```
-
-## Quick Start
-
-The easiest way to test SpiritOS in KVM is using the Makefile targets:
 
 ```bash
 # Build and run in KVM (all-in-one)

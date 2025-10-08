@@ -13,7 +13,7 @@ echo ""
 cd "$(dirname "$0")"
 
 # Check if built
-if [ ! -f "build/spiritos-kernel" ] || [ ! -f "build/spiroctl" ]; then
+if [ ! -f "build/spiroctl" ]; then
     echo "Building SpiritOS..."
     make clean > /dev/null 2>&1
     make all > /dev/null 2>&1
@@ -48,20 +48,6 @@ echo ""
 cat etc/spiro/triggers.yaml | head -20
 echo ""
 
-echo "5. Starting Kernel Demo (runs for 7 seconds)"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "The kernel will:"
-echo "  • Initialize all components (Soul Core, Destiny Engine, etc.)"
-echo "  • Mount /astral virtual filesystem"
-echo "  • Register example triggers"
-echo "  • Evaluate cosmic conditions"
-echo "  • Awaken matching rituals"
-echo ""
-echo "Press Ctrl+C to stop early, or wait 7 seconds..."
-echo ""
-timeout 7 ./build/spiritos-kernel || true
-echo ""
-
 echo "╔═══════════════════════════════════════════════════════╗"
 echo "║              Demo Complete ✨                         ║"
 echo "╚═══════════════════════════════════════════════════════╝"
@@ -74,8 +60,8 @@ echo "  ✓ Astral FS (virtual filesystem)"
 echo "  ✓ Trigger evaluation (DSL expressions)"
 echo ""
 echo "To explore further:"
-echo "  • Run './build/spiritos-kernel' to start the full system"
 echo "  • Use './build/spiroctl help' to see all commands"
+echo "  • Run 'make kvm-test' to test the freestanding kernel in QEMU/KVM"
 echo "  • Check docs/API.md for API reference"
 echo "  • Read docs/TDD.md for technical details"
 echo "  • Review etc/spiro/*.yaml for configuration examples"
