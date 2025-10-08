@@ -238,6 +238,21 @@ timeout 2 ./build/spiritos-kernel
 ./build/spiroctl trigger list
 ```
 
+### KVM/QEMU Testing
+
+SpiritOS can be run in a virtual machine for isolated testing:
+
+```bash
+# Run in KVM/QEMU (all-in-one)
+make kvm-test
+
+# Or step by step
+make kvm-image        # Create bootable image
+./kvm/run-kvm.sh      # Launch VM
+```
+
+See [kvm/README.md](kvm/README.md) for detailed KVM testing documentation.
+
 ## 🎯 Development Roadmap
 
 Based on the Technical Design Document:
