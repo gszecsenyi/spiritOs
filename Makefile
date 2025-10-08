@@ -36,7 +36,7 @@ KERNEL_TARGET = $(BUILD_DIR)/spiritos-kernel
 LIBSPIRO_TARGET = $(BUILD_DIR)/libspiro.a
 SPIROCTL_TARGET = $(BUILD_DIR)/spiroctl
 
-.PHONY: all clean kernel userland install test help
+.PHONY: all clean kernel userland install test help kvm-image kvm-test kvm-clean
 
 all: kernel userland
 	@echo "╔═══════════════════════════════════════╗"
@@ -116,21 +116,41 @@ test: all
 	@echo ""
 	@echo "✓ Basic tests complete"
 
+kvm-image: all
+	@echo "Setting up kernel for KVM..."
+	@./kvm/setup-kernel.sh
+	@echo "Creating KVM initramfs image..."
+	@./kvm/create-initramfs.sh
+	@echo "✓ KVM image ready"
+
+kvm-test: kvm-image
+	@echo "Launching SpiritOS in KVM..."
+	@./kvm/run-kvm.sh
+
+kvm-clean:
+	@echo "Cleaning KVM artifacts..."
+	@rm -rf kvm/initramfs kvm/initramfs.cpio.gz kvm/vmlinuz
+	@echo "✓ KVM artifacts cleaned"
+
 help:
 	@echo "SpiritOS Build System"
 	@echo ""
 	@echo "Targets:"
-	@echo "  all      - Build kernel and userland (default)"
-	@echo "  kernel   - Build kernel only"
-	@echo "  userland - Build userland tools only"
-	@echo "  clean    - Remove build artifacts"
-	@echo "  install  - Install to system (requires sudo)"
-	@echo "  test     - Run basic tests"
-	@echo "  help     - Show this help"
+	@echo "  all       - Build kernel and userland (default)"
+	@echo "  kernel    - Build kernel only"
+	@echo "  userland  - Build userland tools only"
+	@echo "  clean     - Remove build artifacts"
+	@echo "  install   - Install to system (requires sudo)"
+	@echo "  test      - Run basic tests"
+	@echo "  kvm-image - Create initramfs for KVM testing"
+	@echo "  kvm-test  - Build and run in KVM virtual machine"
+	@echo "  kvm-clean - Remove KVM artifacts"
+	@echo "  help      - Show this help"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make          # Build everything"
 	@echo "  make clean    # Clean build"
 	@echo "  make test     # Run tests"
+	@echo "  make kvm-test # Test in KVM"
 
 .DEFAULT_GOAL := all
