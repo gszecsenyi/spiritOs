@@ -52,7 +52,7 @@ KERNEL_HOSTED_SRCS = $(KERNEL_DIR)/soul_core.c \
                      $(KERNEL_DIR)/syscalls.c \
                      $(KERNEL_DIR)/main_hosted.c
 
-KERNEL_HOSTED_OBJS = $(KERNEL_HOSTED_SRCS:%.c=$(BUILD_DIR)/%.o)
+KERNEL_HOSTED_OBJS = $(KERNEL_HOSTED_SRCS:%.c=$(BUILD_DIR)/%_hosted.o)
 
 # Library sources
 LIB_SRCS = $(LIB_DIR)/libspiro.c
@@ -113,10 +113,10 @@ $(LIBSPIRO_TARGET): $(LIB_OBJS)
 $(SPIROCTL_TARGET): $(SPIROCTL_OBJS) $(LIB_OBJS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $(SPIROCTL_OBJS) \
-		$(BUILD_DIR)/$(KERNEL_DIR)/soul_core.o \
-		$(BUILD_DIR)/$(KERNEL_DIR)/ephemeris_provider.o \
-		$(BUILD_DIR)/$(KERNEL_DIR)/destiny_engine.o \
-		$(BUILD_DIR)/$(KERNEL_DIR)/astral_fs.o \
+		$(BUILD_DIR)/$(KERNEL_DIR)/soul_core_hosted.o \
+		$(BUILD_DIR)/$(KERNEL_DIR)/ephemeris_provider_hosted.o \
+		$(BUILD_DIR)/$(KERNEL_DIR)/destiny_engine_hosted.o \
+		$(BUILD_DIR)/$(KERNEL_DIR)/astral_fs_hosted.o \
 		$(LIB_OBJS) $(LDFLAGS)
 	@echo "✓ Control utility built: $@"
 
@@ -129,6 +129,11 @@ $(BUILD_DIR)/boot/%.o: boot/%.S
 $(BUILD_DIR)/$(KERNEL_DIR)/%.o: $(KERNEL_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(KERNEL_CFLAGS) -c -o $@ $<
+
+# Compile hosted kernel objects (different suffix)
+$(BUILD_DIR)/$(KERNEL_DIR)/%_hosted.o: $(KERNEL_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -DHOSTED_BUILD -c -o $@ $<
 
 # Compile HAL objects
 $(BUILD_DIR)/$(HAL_DIR)/%.o: $(HAL_DIR)/%.c
