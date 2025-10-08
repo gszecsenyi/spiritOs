@@ -4,10 +4,8 @@
  * A living map of cosmic influence
  */
 
+#include "freestanding.h"
 #include "astral_fs.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 static celestial_data_t current_state;
 static bool is_mounted = false;

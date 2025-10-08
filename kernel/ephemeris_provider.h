@@ -8,8 +8,14 @@
 #ifndef EPHEMERIS_PROVIDER_H
 #define EPHEMERIS_PROVIDER_H
 
-#include <time.h>
 #include <stdbool.h>
+#include <stdint.h>
+
+/* Time type for freestanding environment */
+#ifndef _TIME_T_DEFINED
+#define _TIME_T_DEFINED
+typedef long time_t;
+#endif
 
 /* Lunar Phases */
 typedef enum {
