@@ -97,19 +97,18 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 /usr/bin/spiroctl trigger list
 echo ""
 
-echo "[INIT] SpiritOS KVM test complete!"
-echo "[INIT] Shutting down in 5 seconds..."
-sleep 5
+echo "[INIT] SpiritOS initialization complete!"
+echo "[INIT] You can now use spiroctl to manage the system."
+echo "[INIT] Available commands:"
+echo "  spiroctl ephemeris show     - Display current celestial state"
+echo "  spiroctl trigger list       - List all triggers"
+echo "  spiroctl help               - Show all available commands"
+echo ""
+echo "[INIT] Starting interactive shell..."
+echo ""
 
-# Shutdown the kernel
-kill $KERNEL_PID 2>/dev/null || true
-sleep 2
-
-echo "[INIT] Powering off VM..."
-# Try various shutdown methods
-poweroff -f 2>/dev/null || \
-echo o > /proc/sysrq-trigger 2>/dev/null || \
-halt -f
+# Start an interactive shell for control
+exec /bin/sh
 INITEOF
 
 chmod +x "$INITRAMFS_DIR/init"
