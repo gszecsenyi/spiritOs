@@ -32,6 +32,19 @@ int snprintf(char *str, size_t size, const char *format, ...);
 /* Time functions - stub implementations */
 typedef long time_t;
 
+/* Math functions - simple implementations for freestanding */
+static inline double fmod(double x, double y) {
+    /* Simple fmod implementation */
+    if (y == 0.0) return 0.0;
+    double quot = x / y;
+    quot = (double)((int)quot);  /* Truncate to integer */
+    return x - quot * y;
+}
+
+static inline double fabs(double x) {
+    return (x < 0.0) ? -x : x;
+}
+
 /* Basic tm structure */
 struct tm {
     int tm_sec;    /* seconds */

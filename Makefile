@@ -94,7 +94,7 @@ userland: $(LIBSPIRO_TARGET) $(SPIROCTL_TARGET)
 # Build freestanding kernel
 $(KERNEL_TARGET): $(BOOT_OBJ) $(KERNEL_OBJS)
 	@mkdir -p $(dir $@)
-	$(CC) -m32 -T boot/linker.ld -nostdlib -o $@ $^ -lm -lgcc
+	$(CC) -m32 -T boot/linker.ld -nostdlib -static -no-pie -o $@ $^ -lgcc
 	@echo "✓ Freestanding kernel built: $@"
 
 # Build hosted kernel (for development)

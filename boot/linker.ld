@@ -8,22 +8,16 @@ ENTRY(_start)
 
 SECTIONS
 {
-    /* Kernel starts at 1MB physical address (standard for x86) */
+    /* Kernel loads at 1MB physical address */
     . = 1M;
     
     _kernel_start = .;
     
-    /* Multiboot header must be in first 8KB */
-    .multiboot : ALIGN(4K)
+    /* Multiboot header and boot code must be first */
+    .boot :
     {
         *(.multiboot)
-    }
-    
-    /* Read-only code */
-    .text : ALIGN(4K)
-    {
         *(.text)
-        *(.text.*)
     }
     
     /* Read-only data */

@@ -6,7 +6,6 @@
 
 #include "freestanding.h"
 #include "ephemeris_provider.h"
-#include <math.h>
 
 static bool is_online_mode = false;
 static const char* MOON_PHASE_NAMES[] = {
