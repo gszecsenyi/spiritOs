@@ -14,7 +14,7 @@ This single command will:
 3. Create the initramfs with SpiritOS
 4. Launch QEMU and run SpiritOS
 5. Execute automated tests
-6. Shutdown cleanly
+6. Drop into an interactive shell for manual control
 
 ## Expected Output
 
@@ -35,7 +35,7 @@ You should see:
 2. **Init (2-3s)**: Custom init script mounts filesystems and starts SpiritOS
 3. **SpiritOS (3-13s)**: Kernel runs, components initialize, cosmic ticks execute
 4. **Tests (13-18s)**: Spiroctl tests celestial state and triggers
-5. **Shutdown (18-20s)**: Clean kernel shutdown and VM poweroff
+5. **Interactive Shell**: Shell prompt appears for manual spiroctl commands
 
 ## Success Indicators
 
@@ -44,16 +44,16 @@ Look for these messages to confirm success:
 ✓ "SpiritOS is now alive ✨"
 ✓ "Trigger registered: 'full_moon_ritual'"
 ✓ "=== Current Celestial State ==="
-✓ "SpiritOS KVM test complete!"
-✓ "reboot: Power down"
+✓ "SpiritOS initialization complete!"
+✓ "Starting interactive shell..." followed by a shell prompt
 
 ## Troubleshooting
 
 **Problem**: "Permission denied" on kernel
 **Solution**: Run `./kvm/setup-kernel.sh` again
 
-**Problem**: VM doesn't shutdown
-**Solution**: Press Ctrl-A, then X to force quit QEMU
+**Problem**: Want to exit the VM
+**Solution**: Press Ctrl-A, then X to quit QEMU, or type `exit` at the shell prompt to shutdown gracefully
 
 **Problem**: No KVM acceleration
 **Solution**: This is normal in some environments (GitHub Actions, nested VMs). It will use software emulation automatically.

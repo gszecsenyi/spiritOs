@@ -44,7 +44,7 @@ When you run `make kvm-test`:
    - Destiny Engine (cosmic scheduler)
    - Astral FS (virtual filesystem)
 4. **Cosmic Tick Loop**: The kernel runs for 60 cosmic ticks
-5. **Shutdown**: Clean shutdown after completion
+5. **Completion**: Kernel completes its demonstration and halts
 
 ## Output
 
@@ -99,9 +99,9 @@ This creates `build/spiritos.iso` which can be burned to a CD/DVD or used with a
 
 ## Troubleshooting
 
-### VM doesn't shutdown automatically
+### Need to exit the VM
 
-Press Ctrl-A, then X to exit QEMU manually.
+Press Ctrl-A, then X to exit QEMU manually. When using the hosted kernel approach (via `run-kvm.sh`), you can also type `exit` at the shell prompt.
 
 ### KVM not available
 
