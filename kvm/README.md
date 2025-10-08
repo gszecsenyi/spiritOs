@@ -1,6 +1,8 @@
 # SpiritOS QEMU Testing
 
-**Note:** The scripts in this directory (create-initramfs.sh, run-kvm.sh, setup-kernel.sh) were for running a hosted kernel in a VM and are now obsolete. Use `make kvm-test` from the root directory to test the freestanding kernel directly in QEMU.
+**Note:** The scripts in this directory (create-initramfs.sh, run-kvm.sh, setup-kernel.sh) are now obsolete. They were used for running a hosted kernel in a VM. 
+
+Use `make kvm-test` from the root directory to test the freestanding kernel directly in QEMU.
 
 ## Testing the Freestanding Kernel
 
@@ -30,89 +32,45 @@ On Fedora/RHEL:
 sudo dnf install qemu-kvm qemu-system-x86
 ```
 
-```bash
-# Build and run in KVM (all-in-one)
-make kvm-test
-
-# Or step-by-step:
-make all              # Build SpiritOS
-make kvm-image        # Create initramfs and setup kernel
-./kvm/run-kvm.sh      # Launch in QEMU/KVM
-```
-
 ## What Happens
 
-When you run `make kvm-test` or `./kvm/run-kvm.sh`:
+When you run `make kvm-test`:
 
-1. **Kernel Boot**: QEMU boots a Linux kernel with the SpiritOS initramfs
-2. **Init Script**: The custom init script mounts filesystems and starts SpiritOS
-3. **SpiritOS Execution**: The SpiritOS kernel initializes all components:
+1. **Direct Boot**: QEMU boots the SpiritOS freestanding kernel directly using multiboot
+2. **Hardware Initialization**: The kernel initializes VGA, serial port, and timer
+3. **SpiritOS Execution**: The kernel initializes all components:
    - Soul Core (process management)
    - Ephemeris Provider (celestial calculations)
    - Destiny Engine (cosmic scheduler)
    - Astral FS (virtual filesystem)
-4. **Demonstration**: 
-   - SpiritOS runs for 10 seconds
-   - Tests the spiroctl utility
-   - Shows current celestial state
-   - Lists registered triggers
-5. **Shutdown**: Clean VM shutdown after completion
+4. **Cosmic Tick Loop**: The kernel runs for 60 cosmic ticks
+5. **Shutdown**: Clean shutdown after completion
 
 ## Output
 
-You should see output similar to:
+You should see output in the QEMU console similar to:
 
 ```
 ╔═══════════════════════════════════════════════════════╗
-║     SpiritOS - Booting in KVM Virtual Machine        ║
-╚═══════════════════════════════════════════════════════╝
-
-[INIT] Filesystems mounted
-[INIT] Starting SpiritOS kernel...
-
-╔═══════════════════════════════════════════════════════╗
 ║            SpiritOS - Spiritual Operating System      ║
-║                  Soul Core Awakening                  ║
+║              Freestanding Kernel Mode                 ║
 ╚═══════════════════════════════════════════════════════╝
 
+[VGA] Display initialized (80x25)
+[SERIAL] COM1 initialized
 [KERNEL] Initializing kernel components...
 [SOUL CORE] Awakening... The heart of SpiritOS begins to beat.
 ...
 ```
 
-## Files
-
-- **create-initramfs.sh**: Creates a minimal initramfs with SpiritOS binaries
-- **setup-kernel.sh**: Copies the host kernel for QEMU use
-- **run-kvm.sh**: Launches QEMU with appropriate parameters
-- **vmlinuz**: Linux kernel image (generated)
-- **initramfs.cpio.gz**: Initial RAM filesystem with SpiritOS (generated)
-
 ## Technical Details
 
-### Initramfs Structure
-
-The initramfs contains:
-- `/init`: Custom init script that starts SpiritOS
-- `/usr/bin/spiritos-kernel`: SpiritOS kernel binary
-- `/usr/bin/spiroctl`: SpiritOS control utility
-- `/bin/`, `/lib/`, `/lib64/`: Essential binaries and libraries
-- `/proc`, `/sys`, `/dev`: Standard Linux filesystem mount points
-- `/astral`: Mount point for SpiritOS virtual filesystem
-
-### QEMU Parameters
-
-```bash
-qemu-system-x86_64 \
-    -enable-kvm \           # Use KVM acceleration (if available)
-    -nographic \            # Console-only mode
-    -serial mon:stdio \     # Serial console to stdout
-    -kernel vmlinuz \       # Linux kernel
-    -initrd initramfs.cpio.gz \  # Initial ramdisk
-    -append "console=ttyS0 quiet" \  # Kernel parameters
-    -m 256M \               # 256MB RAM
-    -smp 1                  # Single CPU core
-```
+The freestanding kernel:
+- Boots directly via multiboot protocol (no Linux host)
+- Uses custom VGA driver for console output
+- Uses serial port (COM1) for debugging output
+- Implements its own timer and string functions
+- Runs completely in kernel space (no userland processes)
 
 ## KVM Acceleration
 
@@ -129,28 +87,17 @@ sudo usermod -a -G kvm $USER
 # Log out and back in for changes to take effect
 ```
 
-## Customization
+## Creating a Bootable ISO
 
-### Modifying Init Behavior
+For testing on real hardware or other virtual machines, you can create a bootable ISO:
 
-Edit `create-initramfs.sh` and modify the init script section to change what happens when the VM boots.
+```bash
+make iso
+```
 
-### Changing VM Resources
-
-Edit `run-kvm.sh` and modify the QEMU parameters:
-- `-m 256M`: Change memory allocation
-- `-smp 1`: Change CPU count
-- Add `-display gtk`: Enable graphical window instead of console
-
-### Using a Different Kernel
-
-Replace `kvm/vmlinuz` with your preferred kernel image, or modify `setup-kernel.sh` to download a specific kernel version.
+This creates `build/spiritos.iso` which can be burned to a CD/DVD or used with any ISO-capable VM software.
 
 ## Troubleshooting
-
-### "Permission denied" when accessing kernel
-
-Run `./kvm/setup-kernel.sh` again with sudo if needed.
 
 ### VM doesn't shutdown automatically
 
@@ -160,25 +107,18 @@ Press Ctrl-A, then X to exit QEMU manually.
 
 This is normal in some environments (e.g., nested virtualization). The system will automatically fall back to software emulation.
 
-### "No such file or directory" errors in VM
-
-Ensure all required libraries were copied. Check the initramfs creation output for errors.
-
 ## Clean Up
 
-To remove generated KVM artifacts:
+To remove generated build artifacts:
 
 ```bash
-make kvm-clean
+make clean
 ```
-
-This removes:
-- `kvm/initramfs/` (temporary directory)
-- `kvm/initramfs.cpio.gz` (initramfs archive)
-- `kvm/vmlinuz` (kernel copy)
 
 ## See Also
 
 - [Main README](../README.md) - SpiritOS overview
 - [Technical Design Document](../docs/TDD.md) - Architecture details
+- [Standalone Kernel Documentation](../docs/STANDALONE_KERNEL.md) - Freestanding kernel details
 - [QEMU Documentation](https://www.qemu.org/docs/master/) - QEMU/KVM reference
+
