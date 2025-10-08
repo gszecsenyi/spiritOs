@@ -428,7 +428,7 @@ spiritOs/
 │   └── TDD.md                  # This document
 │
 ├── build/                       # Build output (generated)
-│   ├── spiritos-kernel         # Kernel executable
+│   ├── spiritos.elf            # Freestanding kernel
 │   ├── spiroctl                # Control utility
 │   └── libspiro.a              # Static library
 │
@@ -516,9 +516,6 @@ make userland
 ```bash
 # Run basic tests
 make test
-
-# Manual kernel test (runs for 2 seconds)
-timeout 2 ./build/spiritos-kernel
 
 # Test control utility
 ./build/spiroctl help

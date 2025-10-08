@@ -2,7 +2,7 @@
 
 ## Summary
 
-Successfully transformed SpiritOS from a hosted userland application into a **true standalone operating system kernel** for x86 architecture, similar to Linux.
+SpiritOS is a **true standalone operating system kernel** for x86 architecture, running on bare metal without any hosted dependencies.
 
 ## What Was Implemented
 
@@ -22,22 +22,16 @@ Created bare-metal drivers in `kernel/hal/`:
 
 ### 3. Freestanding C Environment
 - **No libc Dependency**: Completely self-contained kernel
-- **Custom Standard Library** (`freestanding.h`): Maps POSIX functions to kernel equivalents
-- **Conditional Compilation**: Supports both freestanding and hosted builds
+- **Custom Standard Library** (`freestanding.h`): Maps standard functions to kernel equivalents
 - **Math Functions**: Implemented `fmod`, `fabs` without libm
 - **Time Functions**: Stubs for `time_t`, `localtime`, `difftime`
 
-### 4. Dual Build System
-The Makefile supports two build modes:
+### 4. Build System
+The Makefile builds a freestanding kernel:
 - **Standalone Kernel** (`build/spiritos.elf`):
   - Compiled with `-ffreestanding -nostdlib -static -no-pie -m32`
   - Runs on bare metal (QEMU/KVM or real hardware)
   - Multiboot2 bootable
-  
-- **Hosted Kernel** (`build/spiritos-kernel`):
-  - Compiled with standard POSIX flags
-  - Runs on Linux for development/testing
-  - Full debugging support
 
 ### 5. Verified Functionality
 All SpiritOS components work in standalone mode:
@@ -61,16 +55,16 @@ All SpiritOS components work in standalone mode:
 ## Build Commands
 
 ```bash
-# Build everything (standalone + hosted + userland)
+# Build everything (kernel + userland)
 make all
 
 # Create bootable ISO
 make iso
 
-# Test in QEMU/KVM
+# Test in QEMU
 make kvm-test
 
-# Test hosted version
+# Run tests
 make test
 ```
 
@@ -92,13 +86,11 @@ spiritOs/
 │   ├── freestanding.h          # Freestanding C compatibility
 │   ├── snprintf.c              # snprintf implementation
 │   ├── main.c                  # Freestanding kernel main
-│   ├── main_hosted.c           # Hosted kernel main
 │   └── [existing modules]      # Soul Core, Ephemeris, etc.
-├── Makefile                    # Dual-mode build system
+├── Makefile                    # Build system
 └── build/
-    ├── spiritos.elf           # Standalone kernel binary
-    ├── spiritos.iso           # Bootable ISO image
-    └── spiritos-kernel        # Hosted kernel binary
+    ├── spiritos.elf           # Freestanding kernel binary
+    └── spiritos.iso           # Bootable ISO image
 ```
 
 ## Technical Details
@@ -136,4 +128,4 @@ When booted in QEMU, the kernel displays:
 
 **SpiritOS is now a true standalone operating system kernel** that runs directly on x86 hardware, just like Linux, FreeBSD, or any other operating system. It can be booted from a CD/DVD, USB drive, or hard disk using GRUB, and runs completely independently without any host operating system.
 
-The implementation maintains full backward compatibility with the hosted development mode while adding true bare-metal execution capabilities.
+The implementation provides true bare-metal execution capabilities for x86 architecture.

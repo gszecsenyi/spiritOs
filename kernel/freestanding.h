@@ -8,8 +8,18 @@
 #ifndef FREESTANDING_H
 #define FREESTANDING_H
 
-/* Only use these when building freestanding kernel */
-#ifndef HOSTED_BUILD
+/* When building for userland tools, use standard headers */
+#ifdef USERLAND_BUILD
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+#include <unistd.h>
+
+#else
+/* Freestanding kernel build - use custom implementations */
 
 /* Standard types */
 #include <stddef.h>
@@ -93,14 +103,6 @@ static inline struct tm *localtime(const time_t *timep) {
 #define free(x) ((void)0)
 #define exit(x) while(1) { __asm__ volatile ("hlt"); }
 
-#else
-/* HOSTED_BUILD: Use normal POSIX headers */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include <unistd.h>
-#endif
+#endif /* USERLAND_BUILD */
 
 #endif /* FREESTANDING_H */

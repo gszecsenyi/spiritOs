@@ -64,10 +64,7 @@ make test
 ### Running SpiritOS
 
 ```bash
-# Start the kernel (runs cosmic tick loop)
-./build/spiritos-kernel
-
-# In another terminal, use the control utility
+# Use the control utility
 ./build/spiroctl help
 ```
 
@@ -229,29 +226,22 @@ int spiro_get_astral_state(time_t timestamp, spiro_location_t location,
 # Run all tests
 make test
 
-# Test kernel initialization
-timeout 2 ./build/spiritos-kernel
-
 # Test control utility
 ./build/spiroctl help
 ./build/spiroctl ephemeris show
 ./build/spiroctl trigger list
 ```
 
-### KVM/QEMU Testing
+### QEMU Testing
 
-SpiritOS can be run in a virtual machine for isolated testing:
+SpiritOS can be run in QEMU for isolated testing:
 
 ```bash
-# Run in KVM/QEMU (all-in-one)
+# Run freestanding kernel in QEMU
 make kvm-test
-
-# Or step by step
-make kvm-image        # Create bootable image
-./kvm/run-kvm.sh      # Launch VM
 ```
 
-See [kvm/README.md](kvm/README.md) for detailed KVM testing documentation.
+See [kvm/README.md](kvm/README.md) for detailed QEMU testing documentation.
 
 ## 🎯 Development Roadmap
 
