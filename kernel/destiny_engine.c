@@ -4,10 +4,8 @@
  * Orchestrates the awakening of rituals based on cosmic conditions
  */
 
+#include "freestanding.h"
 #include "destiny_engine.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define MAX_TRIGGERS 128
 

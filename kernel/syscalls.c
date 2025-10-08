@@ -4,11 +4,10 @@
  * System call interface for userland to interact with the Soul Core
  */
 
+#include "freestanding.h"
 #include "soul_core.h"
 #include "ephemeris_provider.h"
 #include "destiny_engine.h"
-#include <stdio.h>
-#include <string.h>
 
 /**
  * Query the astral state at a given time and location

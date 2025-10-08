@@ -4,11 +4,8 @@
  * Oracle of Time that provides celestial guidance
  */
 
+#include "freestanding.h"
 #include "ephemeris_provider.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 
 static bool is_online_mode = false;
 static const char* MOON_PHASE_NAMES[] = {

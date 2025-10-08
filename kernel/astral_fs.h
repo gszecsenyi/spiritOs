@@ -7,6 +7,7 @@
 #ifndef ASTRAL_FS_H
 #define ASTRAL_FS_H
 
+#include <stddef.h>
 #include "ephemeris_provider.h"
 
 /* Virtual file paths */
