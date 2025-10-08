@@ -524,7 +524,32 @@ timeout 2 ./build/spiritos-kernel
 ./build/spiroctl trigger list
 ```
 
-### 13.3 Installation
+### 13.3 KVM/QEMU Testing
+
+As specified in section 1.3, SpiritOS supports testing in KVM/QEMU virtual machines for ease of iteration:
+
+```bash
+# Run complete KVM test (recommended)
+make kvm-test
+
+# Or step-by-step
+make kvm-image       # Create bootable image
+./kvm/run-kvm.sh     # Launch VM
+
+# Cleanup
+make kvm-clean
+```
+
+The KVM test creates a minimal Linux environment with SpiritOS and boots it in a virtual machine, demonstrating:
+- Complete kernel initialization sequence
+- All component activation (Soul Core, Destiny Engine, etc.)
+- Cosmic tick loop execution
+- Userland utility functionality
+- Clean shutdown process
+
+See `kvm/README.md` for detailed KVM testing documentation.
+
+### 13.4 Installation
 
 ```bash
 # System-wide installation (requires sudo)
