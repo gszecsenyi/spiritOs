@@ -1,0 +1,81 @@
+# SpiritOS Profiles Configuration
+# Defines spiritual traditions and their interpretations
+
+profiles:
+  - name: wicca
+    tradition: Wicca
+    description: "Wiccan spiritual tradition following lunar cycles and sabbats"
+    rules:
+      - moon_phases:
+          new_moon: "New beginnings, intention setting"
+          waxing_crescent: "Growth, attraction"
+          first_quarter: "Action, decision making"
+          waxing_gibbous: "Refinement, preparation"
+          full_moon: "Manifestation, peak power"
+          waning_gibbous: "Gratitude, sharing"
+          last_quarter: "Release, forgiveness"
+          waning_crescent: "Rest, reflection"
+      
+      - sabbats:
+          samhain: "Oct 31 - Nov 1"
+          yule: "Dec 20 - 23"
+          imbolc: "Feb 1 - 2"
+          ostara: "Mar 19 - 22"
+          beltane: "Apr 30 - May 1"
+          litha: "Jun 19 - 23"
+          lammas: "Aug 1 - 2"
+          mabon: "Sep 21 - 24"
+
+  - name: astrology
+    tradition: Western Astrology
+    description: "Astrological influences based on planetary positions"
+    rules:
+      - planetary_transits:
+          sun: "Consciousness, vitality, life force"
+          moon: "Emotions, intuition, subconscious"
+          mercury: "Communication, intellect, thought"
+          venus: "Love, beauty, harmony"
+          mars: "Action, desire, passion"
+          jupiter: "Expansion, wisdom, luck"
+          saturn: "Discipline, responsibility, karma"
+          uranus: "Innovation, rebellion, change"
+          neptune: "Dreams, spirituality, illusion"
+          pluto: "Transformation, power, rebirth"
+      
+      - zodiac_signs:
+          aries: "Fire - Cardinal - Mars"
+          taurus: "Earth - Fixed - Venus"
+          gemini: "Air - Mutable - Mercury"
+          cancer: "Water - Cardinal - Moon"
+          leo: "Fire - Fixed - Sun"
+          virgo: "Earth - Mutable - Mercury"
+          libra: "Air - Cardinal - Venus"
+          scorpio: "Water - Fixed - Mars/Pluto"
+          sagittarius: "Fire - Mutable - Jupiter"
+          capricorn: "Earth - Cardinal - Saturn"
+          aquarius: "Air - Fixed - Saturn/Uranus"
+          pisces: "Water - Mutable - Jupiter/Neptune"
+
+  - name: numerology
+    tradition: Pythagorean Numerology
+    description: "Numerological influences based on numbers and dates"
+    rules:
+      - master_numbers:
+          1: "New beginnings, leadership, independence"
+          2: "Partnership, balance, cooperation"
+          3: "Creativity, expression, joy"
+          4: "Stability, foundation, hard work"
+          5: "Change, freedom, adventure"
+          6: "Harmony, responsibility, nurturing"
+          7: "Spirituality, wisdom, introspection"
+          8: "Power, success, material abundance"
+          9: "Completion, humanitarianism, wisdom"
+          11: "Intuition, spiritual insight (master)"
+          22: "Master builder, manifestation (master)"
+          33: "Master teacher, compassion (master)"
+
+  - name: custom
+    tradition: Custom
+    description: "User-defined custom spiritual practice"
+    rules:
+      - user_defined: "Custom rules can be added here"

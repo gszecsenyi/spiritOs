@@ -1,0 +1,45 @@
+# SpiritOS Triggers Configuration
+# Defines cosmic triggers that awaken rituals
+
+triggers:
+  - name: full_moon_ritual
+    expression: 'moon == "Full"'
+    exec_path: /usr/bin/full_moon_handler
+    mode: native
+    active: true
+    description: "Awakens during the Full Moon for manifestation work"
+
+  - name: new_moon_ritual
+    expression: 'moon == "New"'
+    exec_path: /usr/bin/new_moon_handler
+    mode: native
+    active: true
+    description: "Awakens during the New Moon for new beginnings"
+
+  - name: mars_scorpio_ritual
+    expression: 'planet["Mars"].sign == "Scorpio"'
+    exec_path: /usr/bin/mars_scorpio_handler
+    mode: sandbox
+    active: true
+    description: "Awakens when Mars enters Scorpio for transformation work"
+
+  - name: numerology_seven
+    expression: 'numerology_day == 7'
+    exec_path: /usr/bin/lucky_day_handler
+    mode: native
+    active: true
+    description: "Awakens on the 7th day of the month for spiritual work"
+
+  - name: waxing_moon_growth
+    expression: 'moon == "Waxing Crescent" || moon == "Waxing Gibbous"'
+    exec_path: /usr/bin/growth_ritual_handler
+    mode: native
+    active: false
+    description: "Awakens during waxing moon phases for growth rituals"
+
+  - name: mercury_retrograde
+    expression: 'planet["Mercury"].retrograde == true'
+    exec_path: /usr/bin/mercury_retrograde_handler
+    mode: sandbox
+    active: false
+    description: "Awakens during Mercury retrograde for introspection"
