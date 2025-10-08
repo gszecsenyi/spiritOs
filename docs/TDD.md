@@ -23,10 +23,12 @@ This document provides the technical design for **SpiritOS**, a fully functional
 
 ### 1.3 Target Platform
 
-- **Primary:** Linux x86_64
-- **Testing:** KVM/QEMU for ease of iteration
-- **Language:** C (kernel and userland)
+- **Architecture:** x86_64 standalone kernel
+- **Implementation:** C (kernel and userland)
 - **Build System:** GNU Make
+- **Testing Environment:** KVM/QEMU virtual machines for isolated kernel testing
+
+**Note:** SpiritOS is designed as a standalone operating system kernel. The current implementation provides a kernel framework that can be tested in virtual machines (KVM/QEMU) or as a development framework on host systems for ease of iteration and development.
 
 ---
 
@@ -526,7 +528,7 @@ timeout 2 ./build/spiritos-kernel
 
 ### 13.3 KVM/QEMU Testing
 
-As specified in section 1.3, SpiritOS supports testing in KVM/QEMU virtual machines for ease of iteration:
+As specified in section 1.3, SpiritOS can be tested in KVM/QEMU virtual machines as a standalone kernel:
 
 ```bash
 # Run complete KVM test (recommended)
@@ -540,7 +542,7 @@ make kvm-image       # Create bootable image
 make kvm-clean
 ```
 
-The KVM test creates a minimal Linux environment with SpiritOS and boots it in a virtual machine, demonstrating:
+The KVM test demonstrates SpiritOS kernel execution in an isolated virtual machine environment:
 - Complete kernel initialization sequence
 - All component activation (Soul Core, Destiny Engine, etc.)
 - Cosmic tick loop execution
@@ -661,9 +663,11 @@ Future enhancements could include:
 
 ### 16.3 Platform Support
 
-- Linux x86_64 primary target
-- No native Windows/macOS support
-- Requires POSIX environment
+- x86_64 architecture (standalone kernel design)
+- Current implementation: POSIX-compatible development framework
+- Testing: KVM/QEMU virtual machines
+
+**Note:** While SpiritOS is architecturally designed as a standalone kernel for x86_64, the current implementation provides a development framework compatible with POSIX environments for ease of development and testing.
 
 ---
 
